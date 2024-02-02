@@ -16,6 +16,7 @@
 		374565372B6C7A4B00E7B99E /* MagicScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565362B6C7A4B00E7B99E /* MagicScannerTests.swift */; };
 		374565412B6C7A4B00E7B99E /* MagicScannerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565402B6C7A4B00E7B99E /* MagicScannerUITests.swift */; };
 		374565432B6C7A4B00E7B99E /* MagicScannerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565422B6C7A4B00E7B99E /* MagicScannerUITestsLaunchTests.swift */; };
+		374565542B6C893300E7B99E /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565532B6C893300E7B99E /* CameraManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		3745653C2B6C7A4B00E7B99E /* MagicScannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicScannerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		374565402B6C7A4B00E7B99E /* MagicScannerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicScannerUITests.swift; sourceTree = "<group>"; };
 		374565422B6C7A4B00E7B99E /* MagicScannerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicScannerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		374565532B6C893300E7B99E /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,9 +102,9 @@
 			isa = PBXGroup;
 			children = (
 				3745654F2B6C7B1B00E7B99E /* AppDelegate */,
-				374565502B6C7E1000E7B99E /* Controllers */,
+				374565522B6C88BB00E7B99E /* Services */,
 				374565512B6C7E9C00E7B99E /* Views */,
-				3745652A2B6C7A4B00E7B99E /* LaunchScreen.storyboard */,
+				374565502B6C7E1000E7B99E /* Controllers */,
 				3745652D2B6C7A4B00E7B99E /* Info.plist */,
 			);
 			path = MagicScanner;
@@ -147,8 +149,17 @@
 			isa = PBXGroup;
 			children = (
 				374565252B6C7A4A00E7B99E /* Main.storyboard */,
+				3745652A2B6C7A4B00E7B99E /* LaunchScreen.storyboard */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		374565522B6C88BB00E7B99E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				374565532B6C893300E7B99E /* CameraManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,6 +295,7 @@
 			files = (
 				374565242B6C7A4A00E7B99E /* ViewController.swift in Sources */,
 				374565202B6C7A4A00E7B99E /* AppDelegate.swift in Sources */,
+				374565542B6C893300E7B99E /* CameraManager.swift in Sources */,
 				374565222B6C7A4A00E7B99E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,6 +478,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T33V289Y8F;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MagicScanner/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -494,6 +507,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T33V289Y8F;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MagicScanner/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

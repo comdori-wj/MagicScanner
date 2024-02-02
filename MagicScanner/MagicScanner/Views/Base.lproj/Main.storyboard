@@ -44,6 +44,12 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="d1H-eS-QL9" secondAttribute="trailing" id="2bG-jT-ldr"/>
+                                    <constraint firstItem="uXx-cd-d7t" firstAttribute="top" secondItem="d1H-eS-QL9" secondAttribute="bottom" constant="20" id="5EK-9P-Ztc"/>
+                                    <constraint firstItem="d1H-eS-QL9" firstAttribute="leading" secondItem="r2O-nL-9Mi" secondAttribute="leading" id="fJB-gM-fuZ"/>
+                                    <constraint firstItem="d1H-eS-QL9" firstAttribute="top" secondItem="r2O-nL-9Mi" secondAttribute="top" id="nU9-bB-Gdh"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -59,6 +65,9 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="e9a-Ur-Ij3"/>
                         <barButtonItem key="rightBarButtonItem" title="자동/수동" id="nP6-DH-RNi"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="cameraView" destination="d1H-eS-QL9" id="OId-5H-OMr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
