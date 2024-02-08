@@ -8,24 +8,26 @@
 import UIKit
 import AVFoundation
 
-final class CameraManager {
+final class CameraManager: NSObject {
+    var delegate: ViewController?
+    let rectangleDetector = RectangleDetector()
     private(set) lazy var captureSession: AVCaptureSession = {
         let captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .hd1920x1080
+        captureSession.sessionPreset = .photo
         return captureSession
     }()
     
-    private var captureImageOutPut: AVCapturePhotoOutput!
+    private var captureImageOutPut = AVCapturePhotoOutput()
     
     private(set) lazy var previewLayer: AVCaptureVideoPreviewLayer = {
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.videoGravity = .resizeAspectFill
+        previewLayer.videoGravity = .resize
         previewLayer.connection?.videoOrientation = .portrait
         
         return previewLayer
     }()
     
-    private var videoDataOutput: AVCaptureVideoDataOutput!
+    private var videoDataOutput = AVCaptureVideoDataOutput()
     
     func checkCameraPermission() {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
@@ -58,13 +60,77 @@ final class CameraManager {
         
         do {
             let deviceInput  = try AVCaptureDeviceInput(device: backCamera)
-            captureImageOutPut = AVCapturePhotoOutput()
-            if captureSession.canAddInput(deviceInput) && captureSession.canAddOutput(captureImageOutPut) {
-                captureSession.addInput(deviceInput)
-                captureSession.addOutput(captureImageOutPut)
+            // 기존의 input을 제거합니다.
+            if let currentInputs = captureSession.inputs as? [AVCaptureDeviceInput] {
+                for input in currentInputs {
+                    captureSession.removeInput(input)
+                }
             }
+            
+            // 기존의 output을 제거합니다.
+            if let currentOutputs = captureSession.outputs as? [AVCaptureOutput] {
+                for output in currentOutputs {
+                    captureSession.removeOutput(output)
+                }
+            }
+            
+            videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+            captureSession.addInput(deviceInput)
+            captureSession.addOutput(videoDataOutput)
+
         } catch {
             print("카메라 설정 오류: ", error.localizedDescription)
         }
+    }
+    
+}
+
+extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        autoreleasepool {
+            guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+            
+            lazy var ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+            ciImage = ciImage.oriented(forExifOrientation: Int32(UIImage.Orientation.leftMirrored.rawValue))
+            
+            //            let imageSize = CGSize(width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer))
+            
+            do {
+                
+                
+                let rectangle = try rectangleDetector.detecteRectangle(ciImage: ciImage)
+                //                ectangleDetector.detecteRectangle(ciImage: ciImage)
+                
+                // MARK: - convertCIImageToUIImage 방식으로 사각형 인식
+                //                guard let rectangleImage = delegate?.drawHighlightOverlay(forPoints: ciImage,
+                //                                                                          topLeft: rectangle.topLeft,
+                //                                                                          topRight: rectangle.topRight,
+                //                                                                          bottomLeft: rectangle.bottomLeft,
+                //                                                                          bottomRight: rectangle.bottomRight) else { return print("sdsds")}
+                //
+                //                if let highlightedUIImage = delegate?.convertCIImageToUIImage(ciImage: rectangleImage) {
+                //                    DispatchQueue.main.async {
+                //                        self.delegate?.drawRectangle2(image: highlightedUIImage)
+                //                    }
+                //                }
+                
+                
+                
+                // MARK: - UIBezierPath를 이용하여 사각형 인식
+                
+                delegate?.drawRectangle4(forPoints: ciImage,
+                                         topLeft: rectangle.topLeft,
+                                         topRight: rectangle.topRight,
+                                         bottomLeft: rectangle.bottomLeft,
+                                         bottomRight: rectangle.bottomRight)
+                print("사각형 인식됨")
+                
+            } catch {
+                print(DetectorError.failToDetectRectangle,"\n인식몬함: ", error.localizedDescription)
+                delegate?.removeRectangle()
+                
+            }
+        }
+        
     }
 }

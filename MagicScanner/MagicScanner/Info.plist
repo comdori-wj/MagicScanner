@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>사물을 스캔 하기위해 카메라 권한을 허용해주세요.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사물을 스캔 하려면 사진 권한을 허용해주세요.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
