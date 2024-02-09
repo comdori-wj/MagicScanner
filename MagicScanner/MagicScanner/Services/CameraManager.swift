@@ -10,7 +10,11 @@ import AVFoundation
 
 final class CameraManager: NSObject {
     var delegate: ViewController?
-    let rectangleDetector = RectangleDetector()
+    private let photoManager = PhotoManager.shared
+    private let rectangleDetector = RectangleDetector()
+    private lazy var captureImage = UIImage()
+    
+   
     private(set) lazy var captureSession: AVCaptureSession = {
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
@@ -27,6 +31,7 @@ final class CameraManager: NSObject {
         return previewLayer
     }()
     
+    var imageDataOutput = AVCapturePhotoOutput()
     private var videoDataOutput = AVCaptureVideoDataOutput()
     
     func checkCameraPermission() {
@@ -60,38 +65,62 @@ final class CameraManager: NSObject {
         
         do {
             let deviceInput  = try AVCaptureDeviceInput(device: backCamera)
-            // 기존의 input을 제거합니다.
-            if let currentInputs = captureSession.inputs as? [AVCaptureDeviceInput] {
-                for input in currentInputs {
-                    captureSession.removeInput(input)
+            
+            if captureSession.canAddInput(deviceInput) && captureSession.canAddOutput(imageDataOutput) && captureSession.canAddOutput(videoDataOutput) {
+                
+                // 기존의 input을 제거합니다.
+                if let currentInputs = captureSession.inputs as? [AVCaptureDeviceInput] {
+                    for input in currentInputs {
+                        captureSession.removeInput(input)
+                    }
                 }
+                
+                // 기존의 output을 제거합니다.
+                if let currentOutputs = captureSession.outputs as? [AVCaptureOutput] {
+                    for output in currentOutputs {
+                        captureSession.removeOutput(output)
+                    }
+                }
+                
+                videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+                captureSession.addInput(deviceInput)
+                captureSession.addOutput(videoDataOutput)
+                captureSession.addOutput(imageDataOutput)
             }
             
-            // 기존의 output을 제거합니다.
-            if let currentOutputs = captureSession.outputs as? [AVCaptureOutput] {
-                for output in currentOutputs {
-                    captureSession.removeOutput(output)
-                }
-            }
-            
-            videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
-            captureSession.addInput(deviceInput)
-            captureSession.addOutput(videoDataOutput)
 
         } catch {
             print("카메라 설정 오류: ", error.localizedDescription)
         }
     }
     
+    func takePhoto() {
+        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
+        imageDataOutput.capturePhoto(with: photoSettings, delegate: self)
+//        appendPhoto(image: captureImage)
+    }
+    
+    func appendPhoto(image: UIImage) {
+        do {
+            try photoManager.getPhoto(image: image)
+            
+        } catch {
+            print("사진 저장 실패: ", error)
+        }
+    }
+    
 }
 
-extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
+extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         autoreleasepool {
             guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
             
             lazy var ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+//            lazy var image = UIImage(ciImage: ciImage)
             ciImage = ciImage.oriented(forExifOrientation: Int32(UIImage.Orientation.leftMirrored.rawValue))
+//            captureImage = image
+           
             
             //            let imageSize = CGSize(width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer))
             
@@ -131,6 +160,13 @@ extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
                 
             }
         }
+        
+    }
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        guard let imageData = photo.fileDataRepresentation() else { return print("사진을 찍지 못햇음") }
+        guard let image = UIImage(data: imageData) else { return print("이미지로 못만듬") }
+        appendPhoto(image: image)
         
     }
 }

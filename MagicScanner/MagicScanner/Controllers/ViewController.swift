@@ -9,10 +9,10 @@ import UIKit
 import AVFoundation
 
 final class ViewController: UIViewController {
+    @IBOutlet weak private var cameraView: UIView!
     
-    @IBOutlet weak  var cameraView: UIView!
-
     private let cameraManager = CameraManager()
+    private let photoManager = PhotoManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,13 +44,33 @@ final class ViewController: UIViewController {
 }
 
 extension ViewController {
-    @IBAction func cancelButtonTapped(_ sender: Any) {
+    @IBAction private func cancelButtonTapped(_ sender: Any) {
         UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             print("앱을 종료합니다")
             exit(0)
         }
     }
+    
+    @IBAction private func preViewButtonTapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+           guard let preViewController = storyboard.instantiateViewController(withIdentifier: "PreViewController") as? PreViewController else { return }
+           
+           // 이미지 설정하기
+        
+//           preViewController.setImages(photoManager.originalPhotos)
+           
+           // PreViewController 표시하기
+           navigationController?.pushViewController(preViewController, animated: true)
+//        navigationController?.pushViewController(PreViewController(), animated: true)
+        
+    }
+    
+    @IBAction private func shutterButtonTapped(_ sender: Any) {
+        print("촬영 버튼 누름")
+        cameraManager.takePhoto()
+    }
+    
 }
 
 extension ViewController {

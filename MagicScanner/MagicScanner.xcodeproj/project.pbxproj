@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		370770B42B707AEE00C370D7 /* DetectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370770B32B707AEE00C370D7 /* DetectorError.swift */; };
 		370CC2592B706D3300D019D9 /* RectangleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370CC2582B706D3300D019D9 /* RectangleDetector.swift */; };
+		371858042B767E0F00C293DC /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371858032B767E0F00C293DC /* PhotoManager.swift */; };
 		372D202B2B748904004BCC66 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372D202A2B748904004BCC66 /* UIImageView+Extension.swift */; };
 		372D20312B74BB58004BCC66 /* PreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372D20302B74BB58004BCC66 /* PreViewController.swift */; };
 		374565202B6C7A4A00E7B99E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745651F2B6C7A4A00E7B99E /* AppDelegate.swift */; };
@@ -44,6 +45,7 @@
 /* Begin PBXFileReference section */
 		370770B32B707AEE00C370D7 /* DetectorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectorError.swift; sourceTree = "<group>"; };
 		370CC2582B706D3300D019D9 /* RectangleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleDetector.swift; sourceTree = "<group>"; };
+		371858032B767E0F00C293DC /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 		372D202A2B748904004BCC66 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		372D20302B74BB58004BCC66 /* PreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreViewController.swift; sourceTree = "<group>"; };
 		3745651C2B6C7A4A00E7B99E /* MagicScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,8 +189,9 @@
 			isa = PBXGroup;
 			children = (
 				374565532B6C893300E7B99E /* CameraManager.swift */,
-				370CC2582B706D3300D019D9 /* RectangleDetector.swift */,
 				377A421D2B72036E00BE5FC7 /* Rectangle.swift */,
+				370CC2582B706D3300D019D9 /* RectangleDetector.swift */,
+				371858032B767E0F00C293DC /* PhotoManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				374565242B6C7A4A00E7B99E /* ViewController.swift in Sources */,
+				371858042B767E0F00C293DC /* PhotoManager.swift in Sources */,
 				374565202B6C7A4A00E7B99E /* AppDelegate.swift in Sources */,
 				370770B42B707AEE00C370D7 /* DetectorError.swift in Sources */,
 				372D202B2B748904004BCC66 /* UIImageView+Extension.swift in Sources */,
