@@ -11,7 +11,7 @@ import AVFoundation
 final class ViewController: UIViewController {
     
     @IBOutlet weak  var cameraView: UIView!
-    
+
     private let cameraManager = CameraManager()
     
     override func viewDidLoad() {
@@ -39,6 +39,16 @@ final class ViewController: UIViewController {
         
         DispatchQueue.global().async {
             self.cameraManager.captureSession.startRunning()
+        }
+    }
+}
+
+extension ViewController {
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            print("앱을 종료합니다")
+            exit(0)
         }
     }
 }
@@ -286,10 +296,4 @@ extension ViewController {
         }
         return nil
     }
-}
-
-
-extension UIImageView {
-    
-    
 }
