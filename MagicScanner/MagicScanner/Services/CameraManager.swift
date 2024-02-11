@@ -74,13 +74,6 @@ final class CameraManager: NSObject {
                     }
                 }
                 
-                // 기존의 output을 제거합니다.
-                if let currentOutputs = captureSession.outputs as? [AVCaptureOutput] {
-                    for output in currentOutputs {
-                        captureSession.removeOutput(output)
-                    }
-                }
-                
                 videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
                 captureSession.addInput(deviceInput)
                 captureSession.addOutput(videoDataOutput)
@@ -93,7 +86,6 @@ final class CameraManager: NSObject {
     }
     
     func takePhoto() {
-
         appendPhoto(image: captureImage)
     }
     
