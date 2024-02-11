@@ -27,7 +27,7 @@ final class PhotoManager {
 //        return image
         
         guard let image = perspectivePhotos.first else {
-            print("no photo")
+            print(PhotoManagerError.noPhoto)
             return UIImage() }
         return image
         

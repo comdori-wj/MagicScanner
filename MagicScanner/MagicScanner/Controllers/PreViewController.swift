@@ -16,6 +16,7 @@ final class PreViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         updateImageView(image: photoManager.getPhoto())
         photos = photoManager.perspectivePhotos
     }
@@ -32,9 +33,9 @@ final class PreViewController: UIViewController {
         
     }
     
-    
-    
     @IBAction private func leftSwipeGesture(_ sender: Any) {
+        guard photos.count > 0 else { return print(PhotoManagerError.noPhoto) }
+
         currentPhotoIndex += 1
         if currentPhotoIndex >= photos.count {
             currentPhotoIndex = 0
@@ -45,6 +46,7 @@ final class PreViewController: UIViewController {
     }
     
     @IBAction private func rightSwipeGesture(_ sender: Any) {
+        guard photos.count > 0 else { return print(PhotoManagerError.noPhoto) }
         currentPhotoIndex -= 1
         if currentPhotoIndex < 0 {
             currentPhotoIndex = photos.count - 1
@@ -66,6 +68,22 @@ final class PreViewController: UIViewController {
             return UIGraphicsGetImageFromCurrentImageContext()
         }
         return nil
+    }
+    
+    @IBAction func removePhotoButtonTapped(_ sender: Any)  {
+        guard photos.count > 0 else {
+            imageView.image = UIImage(named: "nosign")
+           return print(PhotoManagerError.noPhoto)
+        }
+        
+        photos.remove(at: currentPhotoIndex)
+        if currentPhotoIndex > 0 {
+            currentPhotoIndex -= 1
+        }
+        
+        print("사진들카운트: ", photos.count)
+        photoCount.text = "\(String(currentPhotoIndex))/\(String(photos.count))"
+        photoManager.perspectivePhotos = photos
     }
     
     @IBAction private func rotateButtonTapped(_ sender: Any) {

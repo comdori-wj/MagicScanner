@@ -11,15 +11,18 @@ enum PhotoManagerError: Error, CustomStringConvertible {
     case convertToCIImageError
     case failToOutputRectangleImage
     case failToCreateCGImage
+    case noPhoto
     
     var description: String {
         switch self {
         case .convertToCIImageError:
             return "CIImage 변환을 실패하였습니다."
         case .failToOutputRectangleImage:
-            return "사각형 이미지를 출력하지 못하였습니다"
+            return "사각형 이미지를 출력하지 못하였습니다."
         case .failToCreateCGImage:
             return "CGImage 생성을 실패하였습니다."
+        case .noPhoto:
+            return "사진이 없습니다."
         }
     }
 }
