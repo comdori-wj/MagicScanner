@@ -23,6 +23,7 @@
 		374565432B6C7A4B00E7B99E /* MagicScannerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565422B6C7A4B00E7B99E /* MagicScannerUITestsLaunchTests.swift */; };
 		374565542B6C893300E7B99E /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565532B6C893300E7B99E /* CameraManager.swift */; };
 		377A421E2B72036E00BE5FC7 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377A421D2B72036E00BE5FC7 /* Rectangle.swift */; };
+		377DA21A2B788FD4002CA8B4 /* PhotoManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377DA2192B788FD4002CA8B4 /* PhotoManagerError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		374565422B6C7A4B00E7B99E /* MagicScannerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicScannerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		374565532B6C893300E7B99E /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		377A421D2B72036E00BE5FC7 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
+		377DA2192B788FD4002CA8B4 /* PhotoManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManagerError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				370770B32B707AEE00C370D7 /* DetectorError.swift */,
+				377DA2192B788FD4002CA8B4 /* PhotoManagerError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 			files = (
 				374565242B6C7A4A00E7B99E /* ViewController.swift in Sources */,
 				371858042B767E0F00C293DC /* PhotoManager.swift in Sources */,
+				377DA21A2B788FD4002CA8B4 /* PhotoManagerError.swift in Sources */,
 				374565202B6C7A4A00E7B99E /* AppDelegate.swift in Sources */,
 				370770B42B707AEE00C370D7 /* DetectorError.swift in Sources */,
 				372D202B2B748904004BCC66 /* UIImageView+Extension.swift in Sources */,

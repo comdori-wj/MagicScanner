@@ -9,18 +9,43 @@ import UIKit
 
 final class PhotoManager {
     static let shared = PhotoManager()
-    var originalPhotos: [UIImage] = []
-//    var perspectivePhotos: [UIImage] = []
+    private let rectangleDetector = RectangleDetector()
+    var perspectivePhotos: [UIImage] = []
     
-    func getPhoto(image: UIImage) throws {
-        originalPhotos.append(image)
-        print("사진 갯수: ", originalPhotos.count)
+    func setPhoto(image: UIImage) throws {
+        let rectangleDetectorImage = try imageToDetectorRectangle(image: image)
+        let perspectivePhoto = try convertCIImageToUIImage(ciImage: rectangleDetectorImage)
+        perspectivePhotos.append(perspectivePhoto)
+        print("인식된 사진 갯수: ", perspectivePhotos.count)
+        
     }
     
-    func onePhoto() -> UIImage {
-        guard let image = originalPhotos.last else {
+    func getPhoto() -> UIImage {
+//        guard let image = originalPhotos.last else {
+//            print("no photo")
+//            return UIImage() }
+//        return image
+        
+        guard let image = perspectivePhotos.last else {
             print("no photo")
             return UIImage() }
         return image
+        
+    }
+    
+    func imageToDetectorRectangle(image: UIImage) throws -> CIImage {
+        guard let ciImage = image.ciImage else { throw PhotoManagerError.convertToCIImageError }
+        let rectangleFeature = try rectangleDetector.detecteRectangle(ciImage: ciImage)
+        guard let outputRectangleImage = try rectangleDetector.getPrepectiveImage(ciImage: ciImage, feature: rectangleFeature) else { throw PhotoManagerError.failToOutputRectangleImage }
+       return outputRectangleImage
+    }
+    
+    
+    func convertCIImageToUIImage(ciImage: CIImage) throws -> UIImage {
+        let context = CIContext(options: nil)
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            throw PhotoManagerError.failToCreateCGImage
+        }
+        return UIImage(cgImage: cgImage)
     }
 }

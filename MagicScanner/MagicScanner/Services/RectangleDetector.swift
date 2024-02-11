@@ -113,5 +113,17 @@ final class RectangleDetector {
         rectangleFeatureMutable.topLeft = points[3]!
         return rectangleFeatureMutable
     }
-
+    
+    func getPrepectiveImage(ciImage: CIImage, feature: Rectangle) throws -> CIImage? {
+        let perspectiveCorrection = CIFilter(name: "CIPerspectiveCorrection")
+        perspectiveCorrection?.setValue(CIVector(cgPoint: feature.topLeft), forKey: "inputTopLeft")
+        perspectiveCorrection?.setValue(CIVector(cgPoint: feature.topRight), forKey: "inputTopRight")
+        perspectiveCorrection?.setValue(CIVector(cgPoint: feature.bottomRight), forKey: "inputBottomRight")
+        perspectiveCorrection?.setValue(CIVector(cgPoint: feature.bottomLeft), forKey: "inputBottomLeft")
+        perspectiveCorrection?.setValue(ciImage, forKey: kCIInputImageKey)
+        
+        guard let outputImage = perspectiveCorrection?.outputImage else { throw DetectorError.failToGetPerspectiveCorrectionImage }
+        return outputImage
+    }
+    
 }

@@ -35,7 +35,7 @@ final class ViewController: UIViewController {
         cameraManager.setUpCamera()
         
         cameraView.layer.addSublayer(cameraManager.previewLayer)
-        cameraManager.previewLayer.frame = cameraView.frame
+        cameraManager.previewLayer.frame = cameraView.bounds
         
         DispatchQueue.global().async {
             self.cameraManager.captureSession.startRunning()
@@ -54,15 +54,10 @@ extension ViewController {
     
     @IBAction private func preViewButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-           guard let preViewController = storyboard.instantiateViewController(withIdentifier: "PreViewController") as? PreViewController else { return }
-           
-           // 이미지 설정하기
+        guard let preViewController = storyboard.instantiateViewController(withIdentifier: "PreViewController") as? PreViewController else { return }
         
-//           preViewController.setImages(photoManager.originalPhotos)
-           
-           // PreViewController 표시하기
-           navigationController?.pushViewController(preViewController, animated: true)
-//        navigationController?.pushViewController(PreViewController(), animated: true)
+        navigationController?.pushViewController(preViewController, animated: true)
+        //        navigationController?.pushViewController(PreViewController(), animated: true)
         
     }
     
@@ -309,11 +304,4 @@ extension ViewController {
     //    }
     
     
-    func convertCIImageToUIImage(ciImage: CIImage) -> UIImage? {
-        let context = CIContext(options: nil)
-        if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
-            return UIImage(cgImage: cgImage)
-        }
-        return nil
     }
-}
