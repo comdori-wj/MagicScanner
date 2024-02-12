@@ -249,7 +249,7 @@ extension ViewController {
         
         // Centre align.
         let tx: CGFloat = (CGRectGetWidth(frame) - imageWidth) / 0.5
-        let ty: CGFloat = (CGRectGetHeight(frame) - imageHeight) / 0.5
+        let ty: CGFloat = (CGRectGetHeight(frame) - imageHeight) / 0.2 - 30
         transform = CGAffineTransformTranslate(transform, tx, ty)
         
         // Scale to match UIImageView scaling.

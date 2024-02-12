@@ -165,6 +165,9 @@
                                                 <state key="normal" image="crop" catalog="system">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="cropButtonTapped:" destination="WZs-wT-7yJ" eventType="touchUpInside" id="gyj-j7-EDy"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -205,6 +208,67 @@
             </objects>
             <point key="canvasLocation" x="2070.9923664122139" y="-80.281690140845072"/>
         </scene>
+        <!--Repoint View Controller-->
+        <scene sceneID="jKp-w3-gl1">
+            <objects>
+                <viewController storyboardIdentifier="RepointViewController" id="Msd-m8-5FQ" customClass="RepointViewController" customModule="MagicScanner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LsU-9T-9XD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="F3c-DN-25z">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="R1o-tL-DuK">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="714.66666666666663"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="250" translatesAutoresizingMaskIntoConstraints="NO" id="pmY-Gr-7vh">
+                                        <rect key="frame" x="18" y="724.66666666666663" width="357.33333333333331" height="34.333333333333371"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OiT-w7-74q">
+                                                <rect key="frame" x="0.0" y="0.0" width="53.666666666666664" height="34.333333333333336"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="취소"/>
+                                                <connections>
+                                                    <action selector="cancelButtonTapped:" destination="Msd-m8-5FQ" eventType="touchUpInside" id="kwG-2n-Klq"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N7r-cG-1QA">
+                                                <rect key="frame" x="303.66666666666669" y="0.0" width="53.666666666666686" height="34.333333333333336"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="완료"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="R1o-tL-DuK" firstAttribute="leading" secondItem="F3c-DN-25z" secondAttribute="leading" id="0gi-AN-t42"/>
+                                    <constraint firstAttribute="trailing" secondItem="R1o-tL-DuK" secondAttribute="trailing" id="1YK-ST-hmX"/>
+                                    <constraint firstItem="pmY-Gr-7vh" firstAttribute="top" secondItem="R1o-tL-DuK" secondAttribute="bottom" constant="10" id="SQi-Gg-Sic"/>
+                                    <constraint firstAttribute="bottom" secondItem="pmY-Gr-7vh" secondAttribute="bottom" id="TA5-k1-Guh"/>
+                                    <constraint firstItem="R1o-tL-DuK" firstAttribute="top" secondItem="F3c-DN-25z" secondAttribute="top" id="zEe-Vm-dzR"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ooa-y2-b0u"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="F3c-DN-25z" firstAttribute="top" secondItem="ooa-y2-b0u" secondAttribute="top" id="9rM-Lx-yqn"/>
+                            <constraint firstItem="ooa-y2-b0u" firstAttribute="bottom" secondItem="F3c-DN-25z" secondAttribute="bottom" id="Uyb-MJ-Chh"/>
+                            <constraint firstItem="ooa-y2-b0u" firstAttribute="trailing" secondItem="F3c-DN-25z" secondAttribute="trailing" id="jwN-6j-agM"/>
+                            <constraint firstItem="F3c-DN-25z" firstAttribute="leading" secondItem="ooa-y2-b0u" secondAttribute="leading" id="rDA-e7-AAO"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="HYX-Rc-gZy"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="imageView" destination="R1o-tL-DuK" id="ZHX-UU-Zyv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="omw-Ve-8mO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2838.9312977099235" y="-80.281690140845072"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="XFC-Hz-Rl6">
             <objects>
@@ -236,13 +300,13 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemCyanColor">
-            <color red="0.1960784314" green="0.67843137249999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemMintColor">
-            <color red="0.0" green="0.78039215689999997" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

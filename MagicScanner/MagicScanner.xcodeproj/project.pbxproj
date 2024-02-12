@@ -24,6 +24,7 @@
 		374565542B6C893300E7B99E /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374565532B6C893300E7B99E /* CameraManager.swift */; };
 		377A421E2B72036E00BE5FC7 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377A421D2B72036E00BE5FC7 /* Rectangle.swift */; };
 		377DA21A2B788FD4002CA8B4 /* PhotoManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377DA2192B788FD4002CA8B4 /* PhotoManagerError.swift */; };
+		377DA21C2B794269002CA8B4 /* RepointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377DA21B2B794269002CA8B4 /* RepointViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		374565532B6C893300E7B99E /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		377A421D2B72036E00BE5FC7 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
 		377DA2192B788FD4002CA8B4 /* PhotoManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManagerError.swift; sourceTree = "<group>"; };
+		377DA21B2B794269002CA8B4 /* RepointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepointViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 			children = (
 				374565232B6C7A4A00E7B99E /* ViewController.swift */,
 				372D20302B74BB58004BCC66 /* PreViewController.swift */,
+				377DA21B2B794269002CA8B4 /* RepointViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				370CC2592B706D3300D019D9 /* RectangleDetector.swift in Sources */,
 				374565222B6C7A4A00E7B99E /* SceneDelegate.swift in Sources */,
 				377A421E2B72036E00BE5FC7 /* Rectangle.swift in Sources */,
+				377DA21C2B794269002CA8B4 /* RepointViewController.swift in Sources */,
 				372D20312B74BB58004BCC66 /* PreViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

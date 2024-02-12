@@ -12,7 +12,7 @@ final class PreViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     private lazy var photos = [UIImage]()
     @IBOutlet weak var photoCount: UILabel!
-    private lazy var currentPhotoIndex: Int = 0
+    private lazy var currentPhotoIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ final class PreViewController: UIViewController {
     
     @IBAction private func leftSwipeGesture(_ sender: Any) {
         guard photos.count > 0 else { return print(PhotoManagerError.noPhoto) }
-
+        
         currentPhotoIndex += 1
         if currentPhotoIndex >= photos.count {
             currentPhotoIndex = 0
@@ -52,6 +52,7 @@ final class PreViewController: UIViewController {
             currentPhotoIndex = photos.count - 1
         }
         imageView.image = photos[currentPhotoIndex]
+        
         photoCount.text = "\(String(currentPhotoIndex + 1))/\(String(photos.count))"
         print("오른쪽 제스처")
     }
@@ -70,13 +71,14 @@ final class PreViewController: UIViewController {
         return nil
     }
     
-    @IBAction func removePhotoButtonTapped(_ sender: Any)  {
+    @IBAction private func removePhotoButtonTapped(_ sender: Any)  {
         guard photos.count > 0 else {
             imageView.image = UIImage(named: "nosign")
-           return print(PhotoManagerError.noPhoto)
+            return print(PhotoManagerError.noPhoto)
         }
         
         photos.remove(at: currentPhotoIndex)
+        photoManager.originalPhotos.remove(at: currentPhotoIndex)
         if currentPhotoIndex > 0 {
             currentPhotoIndex -= 1
         }
@@ -92,4 +94,17 @@ final class PreViewController: UIViewController {
             print("반시계로 회전됨")
         }
     }
+    
+    @IBAction private func cropButtonTapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let repointViewController = storyboard.instantiateViewController(withIdentifier: "RepointViewController") as? RepointViewController else { return }
+        repointViewController.modalPresentationStyle = .fullScreen
+        repointViewController.lastPhotoIndex = currentPhotoIndex
+        print("넘어가는 카운트수: ",repointViewController.lastPhotoIndex,  currentPhotoIndex)
+
+        navigationController?.pushViewController(repointViewController, animated: true)
+//        present(repointViewController, animated: true)
+        
+    }
+    
 }
