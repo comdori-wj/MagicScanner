@@ -64,6 +64,14 @@ final class RepointViewController: UIViewController {
             drawRectangle(forImage: ciImage, topLeft: rectangleFeature.topLeft, topRight: rectangleFeature.topRight, bottomLeft: rectangleFeature.bottomLeft, bottomRight: rectangleFeature.bottomRight)
         } catch {
             print("repointView 사각형 인식 실패: \(error)")
+            let width = imageView.bounds.width * 0.5
+            let height = imageView.bounds.height * 0.5
+            let topLeft = CGPoint(x: imageView.center.x - width/2, y: imageView.center.y - height/2)
+            let topRight = CGPoint(x: imageView.center.x + width/2, y: imageView.center.y - height/2)
+            let bottomLeft = CGPoint(x: imageView.center.x - width/2, y: imageView.center.y + height/2)
+            let bottomRight = CGPoint(x: imageView.center.x + width/2, y: imageView.center.y + height/2)
+            repointDrawRectangle(topLeft: topLeft, topRight: topRight, bottomLeft: bottomLeft, bottomRight: bottomRight)
+            print("임의로 사각형을 그려서 사용자가 마그네틱 할 수 있게 하였습니다.")
         }
     }
     

@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 
 final class CameraManager: NSObject {
-    var delegate: ViewController?
+    var delegate: MainViewController?
     private let photoManager = PhotoManager.shared
     private let rectangleDetector = RectangleDetector()
     private lazy var captureImage = UIImage()

@@ -77,19 +77,24 @@ final class PreViewController: UIViewController {
         return nil
     }
     
-    @IBAction private func removePhotoButtonTapped(_ sender: Any)  {
-        guard photos.isEmpty == false else {
-            guard let noImage = UIImage(systemName: "nosign") else { return }
-            imageView.contentMode = .scaleToFill
-            imageView.image = noImage
-            return print(PhotoManagerError.noPhoto)
+    @IBAction private func removePhotoButtonTapped(_ sender: Any) {
+        if !photos.isEmpty {
+            photos.remove(at: currentPhotoIndex)
+            photoManager.originalPhotos.remove(at: currentPhotoIndex)
+            
+            if currentPhotoIndex > 0 {
+                currentPhotoIndex -= 1
+            }
         }
         
-        photos.remove(at: currentPhotoIndex)
-        photoManager.originalPhotos.remove(at: currentPhotoIndex)
-        if currentPhotoIndex > 0 {
-            currentPhotoIndex -= 1
+        if currentPhotoIndex < photos.count {
+            imageView.image = photos[currentPhotoIndex]
+        } else {
+            guard let noImage = UIImage(systemName: "nosign") else { return }
+            imageView.image = noImage
+            print(PhotoManagerError.noPhoto)
         }
+        imageView.contentMode = .scaleToFill
         
         print("사진들카운트: ", photos.count)
         photoCount.text = "\(String(currentPhotoIndex))/\(String(photos.count))"
