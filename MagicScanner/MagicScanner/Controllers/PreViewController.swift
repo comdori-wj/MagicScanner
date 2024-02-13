@@ -58,27 +58,35 @@ final class PreViewController: UIViewController {
     }
     
     private func rotateImage(image: UIImage, byDegrees degrees: CGFloat) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        let oldSize = image.size
+        let radianValue = abs(degrees) * CGFloat.pi / 180
+        let newWidth = abs(oldSize.width * cos(radianValue)) + abs(oldSize.height * sin(radianValue))
+        let newHeight = abs(oldSize.width * sin(radianValue)) + abs(oldSize.height * cos(radianValue))
+        let newSize = CGSize(width: ceil(newWidth), height: ceil(newHeight))
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, image.scale)
         defer { UIGraphicsEndImageContext() }
         
         if let context = UIGraphicsGetCurrentContext() {
-            let origin = CGPoint(x: image.size.width / 2.0, y: image.size.height / 2.0)
+            let origin = CGPoint(x: newSize.width / 2.0, y: newSize.height / 2.0)
             context.translateBy(x: origin.x, y: origin.y)
             context.rotate(by: -degrees * .pi / 180)
-            image.draw(in: CGRect(x: -origin.x, y: -origin.y, width: image.size.width, height: image.size.height))
+            image.draw(in: CGRect(x: -oldSize.width / 2, y: -oldSize.height / 2, width: oldSize.width, height: oldSize.height))
             return UIGraphicsGetImageFromCurrentImageContext()
         }
         return nil
     }
     
     @IBAction private func removePhotoButtonTapped(_ sender: Any)  {
-        guard photos.count > 0 else {
-            imageView.image = UIImage(named: "nosign")
+        guard photos.isEmpty == false else {
+            guard let noImage = UIImage(systemName: "nosign") else { return }
+            imageView.contentMode = .scaleToFill
+            imageView.image = noImage
             return print(PhotoManagerError.noPhoto)
         }
         
         photos.remove(at: currentPhotoIndex)
-        photoManager.originalPhotos.remove(at: currentPhotoIndex)
+        photoManager.originalPhotos.removeAll()
         if currentPhotoIndex > 0 {
             currentPhotoIndex -= 1
         }
@@ -101,10 +109,7 @@ final class PreViewController: UIViewController {
         repointViewController.modalPresentationStyle = .fullScreen
         repointViewController.lastPhotoIndex = currentPhotoIndex
         print("넘어가는 카운트수: ",repointViewController.lastPhotoIndex,  currentPhotoIndex)
-
         navigationController?.pushViewController(repointViewController, animated: true)
-//        present(repointViewController, animated: true)
-        
     }
     
 }
