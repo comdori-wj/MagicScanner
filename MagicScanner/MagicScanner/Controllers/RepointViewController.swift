@@ -15,6 +15,7 @@ final class RepointViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     private var rectangleLayer = CAShapeLayer()
+    private var repointPath: UIBezierPath?
     private var topLeftView: UIView?
     private var topRightView: UIView?
     private var bottomLeftView: UIView?
@@ -23,9 +24,21 @@ final class RepointViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        
+        setImage()
+        rectangleMaker(image: setImage())
+    }
+    
+    private func setImage() -> UIImage {
+        if photoManager.originalPhotos.isEmpty {
+            guard let noImage = UIImage(systemName: "nosign") else { return UIImage()}
+            //            imageView.contentMode = .scaleToFill
+            updateImageView(image: noImage)
+            print(PhotoManagerError.noPhoto)
+            return noImage
+        }
         let image = photoManager.originalPhotos[lastPhotoIndex]
         updateImageView(image: image)
+        return image
     }
     
     private func updateImageView(image: UIImage) {
@@ -33,20 +46,24 @@ final class RepointViewController: UIViewController {
         let count = photoManager.originalPhotos.count
         print("현재 사진 번호 : ", lastPhotoIndex)
         print("원본 사진 갯수: ", count)
-        rectangleMaker(image: image)
     }
     
-    private func rectangleMaker(image: UIImage) {
+    private func convertUIImageToCIImage(image: UIImage) -> CIImage {
         guard let imageData = image.jpegData(compressionQuality: 1.0),
               let ciImage = CIImage(data: imageData) else {
             print(PhotoManagerError.convertToCIImageError)
-            return
+            return CIImage()
         }
+        return ciImage
+    }
+    
+    private func rectangleMaker(image: UIImage) {
+        let ciImage = convertUIImageToCIImage(image: image)
         do {
             let rectangleFeature = try rectangleDetector.detecteRectangle(ciImage: ciImage)
             drawRectangle(forImage: ciImage, topLeft: rectangleFeature.topLeft, topRight: rectangleFeature.topRight, bottomLeft: rectangleFeature.bottomLeft, bottomRight: rectangleFeature.bottomRight)
         } catch {
-            print("Error: \(error)")
+            print("repointView 사각형 인식 실패: \(error)")
         }
     }
     
@@ -157,26 +174,37 @@ final class RepointViewController: UIViewController {
         imageView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         
         // 새로운 사각형을 그립니다.
-        let path = UIBezierPath()
-        path.move(to: topLeft)
-        path.addLine(to: topRight)
-        path.addLine(to: bottomRight)
-        path.addLine(to: bottomLeft)
-        path.close()
+        repointPath = UIBezierPath()
+        repointPath?.move(to: topLeft)
+        repointPath?.addLine(to: topRight)
+        repointPath?.addLine(to: bottomRight)
+        repointPath?.addLine(to: bottomLeft)
+        repointPath?.close()
         
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor(red: 79/255, green: 84/255, blue: 125/255, alpha: 1).cgColor
-        shapeLayer.lineWidth = 5
         
-        imageView.layer.addSublayer(shapeLayer)
+        let repointShapeLayer = CAShapeLayer()
+        repointShapeLayer.path = repointPath?.cgPath
+        repointShapeLayer.fillColor = UIColor.clear.cgColor
+        repointShapeLayer.strokeColor = UIColor(red: 79/255, green: 84/255, blue: 125/255, alpha: 1).cgColor
+        repointShapeLayer.lineWidth = 5
+        
+        
+        self.imageView.layer.addSublayer(repointShapeLayer)
         
         drawCircle(at: topLeft, position: "topLeft")
         drawCircle(at: topRight, position: "topRight")
         drawCircle(at: bottomLeft, position: "bottomLeft")
         drawCircle(at: bottomRight, position: "bottomRight")
     }
+    
+    private func cropImage(image: CIImage, rect: CGRect) -> UIImage? {
+        let context = CIContext()
+        let transformedRect = CGRect(x: rect.origin.x, y: image.extent.height - rect.origin.y - rect.height, width: rect.width, height: rect.height)
+        let croppedImage = image.cropped(to: transformedRect)
+        guard let cgImage = context.createCGImage(croppedImage, from: croppedImage.extent) else { return nil }
+        return UIImage(cgImage: cgImage)
+    }
+    
     
     @objc
     private func handlePan(_ gesture: UIPanGestureRecognizer) {
@@ -197,9 +225,17 @@ final class RepointViewController: UIViewController {
         }
     }
     
-    @IBAction func cancelButtonTapped(_ sender: Any) {
+    @IBAction private func cancelButtonTapped(_ sender: Any) {
         navigationController?.popViewController(animated: true)
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    @IBAction private func cropDoneButtonTapped(_ sender: Any) {
+        guard let repointPath = repointPath else { return print("없음")}
+        if let croppedImage = cropImage(image: convertUIImageToCIImage(image: setImage()), rect: repointPath.bounds) {
+            photoManager.perspectivePhotos.append(croppedImage)
+        }
+        
     }
 }
 

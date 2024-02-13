@@ -8,7 +8,6 @@
 import CoreImage
 
 final class RectangleDetector {
-    
     private let detector: CIDetector = {
         let detectorOptions: [String: Any] = [CIDetectorAccuracy: CIDetectorAccuracyHigh, CIDetectorMinFeatureSize: Float(0.2)]
         guard let detector = CIDetector(ofType: CIDetectorTypeRectangle, context: nil, options: detectorOptions) else {

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  MagicScanner
 //
 //  Created by Wonji Ha on 2/2/24.
@@ -8,26 +8,39 @@
 import UIKit
 import AVFoundation
 
-final class ViewController: UIViewController {
+final class MainViewController: UIViewController {
     @IBOutlet weak private var cameraView: UIView!
     private let cameraManager = CameraManager()
     private let photoManager = PhotoManager.shared
+    @IBOutlet weak var previewButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         cameraManager.delegate = self
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         cameraManager.checkCameraPermission()
         setUpCameraView()
+        previewButtonImageChange()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         cameraManager.captureSession.stopRunning()
+        
+    }
+    
+    private func previewButtonImageChange() {
+        if photoManager.perspectivePhotos.isEmpty {
+            previewButton.setImage(UIImage(systemName: "photo"), for: .normal)
+            previewButton.layer.borderWidth = 2
+            previewButton.layer.borderColor = UIColor.systemBrown.cgColor
+        } else {
+            previewButton.setImage(photoManager.perspectivePhotos.last, for: .normal)
+        }
     }
     
     func setUpCameraView() {
@@ -42,7 +55,7 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController {
+extension MainViewController {
     @IBAction private func cancelButtonTapped(_ sender: Any) {
         UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -52,6 +65,7 @@ extension ViewController {
     }
     
     @IBAction private func preViewButtonTapped(_ sender: Any) {
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let preViewController = storyboard.instantiateViewController(withIdentifier: "PreViewController") as? PreViewController else { return }
         
@@ -61,25 +75,12 @@ extension ViewController {
     @IBAction private func shutterButtonTapped(_ sender: Any) {
         print("촬영 버튼 누름")
         cameraManager.takePhoto()
+        previewButtonImageChange()
     }
     
 }
 
-extension ViewController {
-    func drawHighlightOverlay(forPoints image: CIImage, topLeft: CGPoint, topRight: CGPoint, bottomLeft: CGPoint, bottomRight: CGPoint) -> CIImage {
-        var overlay = CIImage(color: CIColor(red: CGFloat(0.26), green: CGFloat(0.67), blue: CGFloat(1), alpha: CGFloat(0.5)))
-        overlay = overlay.cropped(to: image.extent)
-        overlay = overlay.applyingFilter("CIPerspectiveTransformWithExtent",
-                                         parameters: [
-                                            "inputExtent": CIVector(cgRect: image.extent),
-                                            "inputTopLeft": CIVector(cgPoint: topLeft),
-                                            "inputTopRight": CIVector(cgPoint:topRight),
-                                            "inputBottomLeft": CIVector(cgPoint:bottomLeft),
-                                            "inputBottomRight": CIVector(cgPoint:bottomRight)
-                                         ])
-        return overlay.composited(over: image)
-    }
-    
+extension MainViewController {
     func removeRectangle() {
         DispatchQueue.main.async {
             self.cameraView.layer.sublayers?
@@ -89,7 +90,7 @@ extension ViewController {
         }
     }
     
-    func drawRectangle4(forPoints image: CIImage, topLeft: CGPoint, topRight: CGPoint, bottomLeft: CGPoint, bottomRight: CGPoint) {
+    func drawRectangle(forPoints image: CIImage, topLeft: CGPoint, topRight: CGPoint, bottomLeft: CGPoint, bottomRight: CGPoint) {
         
         // 이전에 그려진 테두리를 제거합니다.
         removeRectangle()

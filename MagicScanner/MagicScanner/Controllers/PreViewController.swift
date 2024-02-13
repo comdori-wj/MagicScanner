@@ -86,7 +86,7 @@ final class PreViewController: UIViewController {
         }
         
         photos.remove(at: currentPhotoIndex)
-        photoManager.originalPhotos.removeAll()
+        photoManager.originalPhotos.remove(at: currentPhotoIndex)
         if currentPhotoIndex > 0 {
             currentPhotoIndex -= 1
         }

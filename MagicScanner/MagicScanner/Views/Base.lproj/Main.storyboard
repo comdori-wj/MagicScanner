@@ -28,9 +28,10 @@
                                         <rect key="frame" x="4" y="638.33333333333337" width="385" height="56.666666666666629"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uBj-dW-w6h">
-                                                <rect key="frame" x="0.0" y="2.6666666666666288" width="70.333333333333329" height="51.666666666666664"/>
+                                                <rect key="frame" x="0.0" y="2.3333333333332575" width="70.333333333333329" height="52"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="70.329999999999998" id="o2z-w8-QNu"/>
+                                                    <constraint firstAttribute="height" constant="51.670000000000002" id="ybf-QI-zvZ"/>
                                                 </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" image="photo" catalog="system">
@@ -94,6 +95,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cameraView" destination="d1H-eS-QL9" id="OId-5H-OMr"/>
+                        <outlet property="previewButton" destination="uBj-dW-w6h" id="eNF-TE-bFD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

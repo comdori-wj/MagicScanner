@@ -101,7 +101,7 @@ extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
             
             do {
                 let rectangle = try rectangleDetector.detecteRectangle(ciImage: ciImage)
-                delegate?.drawRectangle4(forPoints: ciImage,
+                delegate?.drawRectangle(forPoints: ciImage,
                                          topLeft: rectangle.topLeft,
                                          topRight: rectangle.topRight,
                                          bottomLeft: rectangle.bottomLeft,
