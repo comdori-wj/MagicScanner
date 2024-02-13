@@ -14,7 +14,6 @@ final class CameraManager: NSObject {
     private let rectangleDetector = RectangleDetector()
     private lazy var captureImage = UIImage()
     
-   
     private(set) lazy var captureSession: AVCaptureSession = {
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
@@ -61,25 +60,18 @@ final class CameraManager: NSObject {
         guard let backCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
             return print("카메라 불러오기 실패")
         }
-        
         do {
             let deviceInput  = try AVCaptureDeviceInput(device: backCamera)
-            
             if captureSession.canAddInput(deviceInput) && captureSession.canAddOutput(videoDataOutput) {
-                
-                // 기존의 input을 제거합니다.
                 if let currentInputs = captureSession.inputs as? [AVCaptureDeviceInput] {
                     for input in currentInputs {
                         captureSession.removeInput(input)
                     }
                 }
-                
                 videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
                 captureSession.addInput(deviceInput)
                 captureSession.addOutput(videoDataOutput)
             }
-            
-
         } catch {
             print("카메라 설정 오류: ", error.localizedDescription)
         }
@@ -92,50 +84,23 @@ final class CameraManager: NSObject {
     func appendPhoto(image: UIImage) {
         do {
             try photoManager.setPhoto(image: image)
-            
         } catch {
             print("사진 저장 실패: ", error)
         }
     }
-    
 }
 
 extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         autoreleasepool {
             guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-            
             lazy var ciImage = CIImage(cvPixelBuffer: pixelBuffer)
             lazy var image = UIImage(ciImage: ciImage)
             ciImage = ciImage.oriented(forExifOrientation: Int32(UIImage.Orientation.leftMirrored.rawValue))
             captureImage = image
-           
-            
-            //            let imageSize = CGSize(width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer))
             
             do {
-                
-                
                 let rectangle = try rectangleDetector.detecteRectangle(ciImage: ciImage)
-                //                ectangleDetector.detecteRectangle(ciImage: ciImage)
-                
-                // MARK: - convertCIImageToUIImage 방식으로 사각형 인식
-                //                guard let rectangleImage = delegate?.drawHighlightOverlay(forPoints: ciImage,
-                //                                                                          topLeft: rectangle.topLeft,
-                //                                                                          topRight: rectangle.topRight,
-                //                                                                          bottomLeft: rectangle.bottomLeft,
-                //                                                                          bottomRight: rectangle.bottomRight) else { return print("sdsds")}
-                //
-                //                if let highlightedUIImage = delegate?.convertCIImageToUIImage(ciImage: rectangleImage) {
-                //                    DispatchQueue.main.async {
-                //                        self.delegate?.drawRectangle2(image: highlightedUIImage)
-                //                    }
-                //                }
-                
-                
-                
-                // MARK: - UIBezierPath를 이용하여 사각형 인식
-                
                 delegate?.drawRectangle4(forPoints: ciImage,
                                          topLeft: rectangle.topLeft,
                                          topRight: rectangle.topRight,
@@ -146,9 +111,7 @@ extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
             } catch {
                 print(DetectorError.failToDetectRectangle,"\n인식몬함: ", error.localizedDescription)
                 delegate?.removeRectangle()
-                
             }
         }
-        
     }
 }

@@ -9,7 +9,7 @@ import CoreImage
 
 final class RectangleDetector {
     
-    let detector: CIDetector = {
+    private let detector: CIDetector = {
         let detectorOptions: [String: Any] = [CIDetectorAccuracy: CIDetectorAccuracyHigh, CIDetectorMinFeatureSize: Float(0.2)]
         guard let detector = CIDetector(ofType: CIDetectorTypeRectangle, context: nil, options: detectorOptions) else {
             return CIDetector()
@@ -17,37 +17,6 @@ final class RectangleDetector {
         
         return detector
     }()
-    
-
-    
-//    func detecteRectangle(ciImage: CIImage) throws -> CIRectangleFeature {
-//        let rectanglesOptions = [CIDetectorAspectRatio: NSNumber(floatLiteral: 1.75)]
-//        let features = detector.features(in: ciImage, options: rectanglesOptions)
-//        guard let rectangleFeatures = features as? [CIRectangleFeature] else { throw DetectorError.failToDetectRectangle }
-//        guard !rectangleFeatures.isEmpty else { throw DetectorError.failToDetectRectangle }
-//        
-//        var maxPerimeter: CGFloat = 0
-//        var largestRectangle: CIRectangleFeature = rectangleFeatures[0]
-//        
-//        for rectangleFeature in rectangleFeatures {
-//            let p1 = rectangleFeature.topLeft
-//            let p2 = rectangleFeature.topRight
-//            let width = hypotf(Float(p1.x - p2.x), Float(p1.y - p2.y))
-//            
-//            let p3 = rectangleFeature.topLeft
-//            let p4 = rectangleFeature.bottomLeft
-//            let height = hypotf(Float(p3.x - p4.x), Float(p3.y - p4.y))
-//            
-//            let currentPerimeter = CGFloat(width + height)
-//            
-//            if currentPerimeter > maxPerimeter {
-//                maxPerimeter = currentPerimeter
-//                largestRectangle = rectangleFeature
-//            }
-//        }
-//        
-//        return largestRectangle
-//    }
     
     func detecteRectangle(ciImage: CIImage) throws -> Rectangle {
         let rectanglesOptions = [CIDetectorAspectRatio: NSNumber(floatLiteral: 1.75)]
@@ -60,13 +29,13 @@ final class RectangleDetector {
         var largestRectangle: CIRectangleFeature = rectangleFeatures[0]
         
         for rectangleFeature in rectangleFeatures {
-            let p1 = rectangleFeature.topLeft
-            let p2 = rectangleFeature.topRight
-            let width = hypotf(Float(p1.x - p2.x), Float(p1.y - p2.y))
+            let point1 = rectangleFeature.topLeft
+            let point2 = rectangleFeature.topRight
+            let width = hypotf(Float(point1.x - point2.x), Float(point1.y - point2.y))
             
-            let p3 = rectangleFeature.topLeft
-            let p4 = rectangleFeature.bottomLeft
-            let height = hypotf(Float(p3.x - p4.x), Float(p3.y - p4.y))
+            let point3 = rectangleFeature.topLeft
+            let point4 = rectangleFeature.bottomLeft
+            let height = hypotf(Float(point3.x - point4.x), Float(point3.y - point4.y))
             
             let currentPerimeter = CGFloat(width + height)
             
@@ -125,5 +94,4 @@ final class RectangleDetector {
         guard let outputImage = perspectiveCorrection?.outputImage else { throw DetectorError.failToGetPerspectiveCorrectionImage }
         return outputImage
     }
-    
 }
