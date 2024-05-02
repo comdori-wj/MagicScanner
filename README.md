@@ -133,10 +133,7 @@ https://github.com/comdori-wj/MagicScanner/assets/22284092/84c35921-a18e-4a02-87
 사물을 인식 후 사각형을 Image로 카메라뷰에 붙여 넣는 방식을 사용하여 카메라 방향이 달라지거나 새로운 물체를 인식할 때마다 지웠다가 붙여 넣는 작업을 반복함으로써 많은 메모리 사용하여 버벅대는 문제가 발생
 
 
-https://github.com/comdori-wj/MagicScanner/assets/22284092/4bbf5372-dae1-49b2-a8ab-d605d4234967
-
-
-
+https://github.com/comdori-wj/MagicScanner/assets/22284092/235a4b62-d800-4ff1-bb93-dd09fd81453f
 
 
 
@@ -144,10 +141,7 @@ https://github.com/comdori-wj/MagicScanner/assets/22284092/4bbf5372-dae1-49b2-a8
 UIBezierPath를 통해 사각형을 그림으로써 카메라 방향이 달라지거나 새로운 물체를 인식할 때 버벅대는 현상을 해결
 
 
-
-https://github.com/comdori-wj/MagicScanner/assets/22284092/04822fd1-3321-4491-9183-b335f4c36f2f
-
-
+https://github.com/comdori-wj/MagicScanner/assets/22284092/1a0435ad-4c79-4644-8ad3-e6a1a562d135
 
 
 
